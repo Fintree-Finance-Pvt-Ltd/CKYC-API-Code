@@ -1,0 +1,45 @@
+export const BEFISC_ENDPOINTS = {
+  SEARCH: '/YKHV',
+  DOWNLOAD_SEND_OTP: '/MQVC/s1',
+  DOWNLOAD_VERIFY_OTP: '/MQVC/s2',
+  DOWNLOAD_RESEND_OTP: '/MQVC/r1',
+} as const;
+
+export const BEFISC_STATUS_CODES = {
+  SUCCESS: 1,
+  NO_RECORD_FOUND: 2,
+  INVALID_ID_TYPE: 3,
+  INVALID_ID_NO_FORMAT: 4,
+  ACCOUNT_NOT_CONFIGURED: 5,
+  CONSENT_OR_PARAMETER_MISSING: 301,
+  SOURCE_DOWN: 302,
+  AUTHKEY_MISSING_OR_INVALID: 401,
+  NO_REQUIRED_PRIVILEGE: 402,
+  REQUEST_LIMIT_EXCEEDED: 403,
+  IP_NOT_WHITELISTED: 404,
+} as const;
+
+export const BEFISC_ID_TYPES = [
+  'PASSPORT',
+  'VOTER_ID',
+  'PAN',
+  'DL',
+  'NREGA',
+  'NPR',
+  'CKYC_ID',
+  'CKYC_REF_ID',
+  'CIN',
+  'RC',
+  'MOBILE',
+] as const;
+
+export type BefiscIdType = (typeof BEFISC_ID_TYPES)[number];
+
+export const BEFISC_AUTH_FACTOR_TYPES = [
+  'DOI',
+  'MOBILE',
+  'PINCODE',
+  'EMAIL',
+] as const;
+
+export type BefiscAuthFactorType = (typeof BEFISC_AUTH_FACTOR_TYPES)[number];
