@@ -15,6 +15,7 @@ describe('HealthController', () => {
     const result = healthController.check();
     expect(result).toEqual({
       status: 'UP',
+      message: 'Service is running normally 👍',
       service: 'fintree-ckyc-service',
     });
   });

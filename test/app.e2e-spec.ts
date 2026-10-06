@@ -60,6 +60,7 @@ describe('CKYC Service API (e2e)', () => {
       success: true,
       data: {
         status: 'UP',
+        message: 'Service is running normally 👍',
         service: 'fintree-ckyc-service',
       },
       error: null,
