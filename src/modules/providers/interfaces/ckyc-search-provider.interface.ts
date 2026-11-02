@@ -16,6 +16,7 @@ export interface CkycSearchResultData {
   age?: string;
   mobCode?: string;
   mobNum?: string;
+  imageType?: string;
   photo?: string;
   kycDate?: string;
   remarks?: string | null;
@@ -28,7 +29,6 @@ export interface CkycSearchProviderResult {
   status: number;
   message: string;
   result?: CkycSearchResultData | null;
-  rawResponse?: unknown;
 }
 
 export interface CkycSearchProvider {

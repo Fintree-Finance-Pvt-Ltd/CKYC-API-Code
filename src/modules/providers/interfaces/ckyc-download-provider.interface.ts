@@ -15,7 +15,6 @@ export interface SendOtpProviderResult {
   billable?: boolean;
   status: number;
   message: string;
-  rawResponse?: unknown;
 }
 
 export interface VerifyOtpProviderInput {
@@ -81,26 +80,52 @@ export interface PersonalDetails {
   decPlace?: string;
   kycDate?: string;
   docSub?: string;
+  disFlag?: string;
+  disType?: string;
+  disPercent?: string;
+  disUdidNumber?: string;
+  resiStdCode?: string;
+  resiTelNum?: string;
+  offStdCode?: string;
+  offTelNum?: string;
+  remarks?: string;
+  kycName?: string;
+  kycDesignation?: string;
+  kycBranch?: string;
+  kycEmpcode?: string;
+  orgName?: string;
+  orgCode?: string;
+  numIdentity?: string;
+  numRelated?: string;
+  numImages?: string;
   [key: string]: unknown;
 }
 
+export interface CkycIdentityItem {
+  sequenceNo?: string;
+  identType?: string;
+  identNum?: string;
+  idverStatus?: string;
+}
+
+export interface CkycImageItem {
+  sequenceNo?: string;
+  imageType?: string;
+  imageCode?: string;
+  globalFlag?: string;
+  branchCode?: string;
+  imageData?: string;
+}
+
 export interface CkycDownloadData {
-  recordCountDetails?: Record<string, unknown>;
+  recordCountDetails?: {
+    downloadCount?: string;
+    updateCount?: string;
+  };
   personalDetails?: PersonalDetails;
-  identityDetails?: Record<string, unknown>;
-  imageDetails?:
-    | {
-        image?: Array<{
-          sequenceNo?: string;
-          imageType?: string;
-          imageCode?: string;
-          globalFlag?: string;
-          branchCode?: string;
-          imageData?: string;
-        }>;
-      }
-    | Record<string, unknown>;
-  [key: string]: unknown;
+  identityDetails?: { identity: CkycIdentityItem[] };
+  relatedPersonDetails?: unknown;
+  imageDetails?: { image: CkycImageItem[] };
 }
 
 export interface VerifyOtpProviderResult {
@@ -110,7 +135,6 @@ export interface VerifyOtpProviderResult {
   status: number;
   message: string;
   result?: CkycDownloadData | null;
-  rawResponse?: unknown;
 }
 
 export interface ResendOtpProviderInput {
@@ -127,7 +151,6 @@ export interface ResendOtpProviderResult {
   billable?: boolean;
   status: number;
   message: string;
-  rawResponse?: unknown;
 }
 
 export interface CkycDownloadProvider {

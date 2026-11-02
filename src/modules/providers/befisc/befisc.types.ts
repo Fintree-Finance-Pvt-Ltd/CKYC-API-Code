@@ -15,6 +15,7 @@ export interface BefiscSearchResultPayload {
   age?: string;
   mob_code?: string;
   mob_num?: string;
+  image_type?: string;
   photo?: string;
   kyc_date?: string;
   remarks?: string | null;

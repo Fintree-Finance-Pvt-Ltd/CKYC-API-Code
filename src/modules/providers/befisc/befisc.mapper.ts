@@ -59,12 +59,12 @@ export class BefiscMapper {
             age: res.result.age,
             mobCode: res.result.mob_code,
             mobNum: res.result.mob_num,
+            imageType: res.result.image_type,
             photo: res.result.photo,
             kycDate: res.result.kyc_date,
             remarks: res.result.remarks,
           }
         : null,
-      rawResponse: res,
     };
   }
 
@@ -95,7 +95,6 @@ export class BefiscMapper {
         res.result?.message ||
         res.message ||
         (isSuccess ? 'Success' : 'Failed'),
-      rawResponse: res,
     };
   }
 
@@ -180,14 +179,60 @@ export class BefiscMapper {
           decPlace: personal.dec_place as string | undefined,
           kycDate: personal.kyc_date as string | undefined,
           docSub: personal.doc_sub as string | undefined,
+          disFlag: personal.dis_flag as string | undefined,
+          disType: personal.dis_type as string | undefined,
+          disPercent: personal.dis_percent as string | undefined,
+          disUdidNumber: personal.dis_udid_number as string | undefined,
+          resiStdCode: personal.resi_std_code as string | undefined,
+          resiTelNum: personal.resi_tel_num as string | undefined,
+          offStdCode: personal.off_std_code as string | undefined,
+          offTelNum: personal.off_tel_num as string | undefined,
+          remarks: personal.remarks as string | undefined,
+          kycName: personal.kyc_name as string | undefined,
+          kycDesignation: personal.kyc_designation as string | undefined,
+          kycBranch: personal.kyc_branch as string | undefined,
+          kycEmpcode: personal.kyc_empcode as string | undefined,
+          orgName: personal.org_name as string | undefined,
+          orgCode: personal.org_code as string | undefined,
+          numIdentity: personal.num_identity as string | undefined,
+          numRelated: personal.num_related as string | undefined,
+          numImages: personal.num_images as string | undefined,
         };
       }
 
+      const counts = res.result.record_count_details;
+      const identityList = BefiscMapper.toList(
+        res.result.identity_details?.identity,
+      );
+      const imageList = BefiscMapper.toList(res.result.image_details?.image);
+
       mappedResult = {
-        recordCountDetails: res.result.record_count_details,
+        recordCountDetails: counts
+          ? {
+              downloadCount: counts.download_count as string | undefined,
+              updateCount: counts.update_count as string | undefined,
+            }
+          : undefined,
         personalDetails: mappedPersonal,
-        identityDetails: res.result.identity_details,
-        imageDetails: res.result.image_details,
+        identityDetails: {
+          identity: identityList.map((item) => ({
+            sequenceNo: item.sequence_no as string | undefined,
+            identType: item.ident_type as string | undefined,
+            identNum: item.ident_num as string | undefined,
+            idverStatus: item.idver_status as string | undefined,
+          })),
+        },
+        relatedPersonDetails: res.result.related_person_details || undefined,
+        imageDetails: {
+          image: imageList.map((item) => ({
+            sequenceNo: item.sequence_no as string | undefined,
+            imageType: item.image_type as string | undefined,
+            imageCode: item.image_code as string | undefined,
+            globalFlag: item.global_flag as string | undefined,
+            branchCode: item.branch_code as string | undefined,
+            imageData: item.image_data as string | undefined,
+          })),
+        },
       };
     }
 
@@ -198,7 +243,6 @@ export class BefiscMapper {
       status: res.status,
       message: res.message || (isSuccess ? 'Success' : 'Failed'),
       result: mappedResult,
-      rawResponse: res,
     };
   }
 
@@ -227,7 +271,15 @@ export class BefiscMapper {
         res.result?.message ||
         res.message ||
         (isSuccess ? 'Success' : 'Failed'),
-      rawResponse: res,
     };
+  }
+
+  // Befisc returns a lone list entry as an object and an empty list as "".
+  private static toList(value: unknown): Record<string, unknown>[] {
+    if (Array.isArray(value)) return value as Record<string, unknown>[];
+    if (value && typeof value === 'object') {
+      return [value as Record<string, unknown>];
+    }
+    return [];
   }
 }

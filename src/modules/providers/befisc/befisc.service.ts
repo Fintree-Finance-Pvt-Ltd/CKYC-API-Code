@@ -194,7 +194,6 @@ export class BefiscService implements CkycSearchProvider, CkycDownloadProvider {
       success: false,
       status: 500,
       message: `Provider request failed: ${message}`,
-      rawResponse: error instanceof AxiosError ? error.response?.data : null,
     } as T;
   }
 }

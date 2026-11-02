@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsIn, IsNotEmpty, IsString } from 'class-validator';
 
 export class VerifyOtpDto {
   @ApiProperty({
@@ -25,6 +25,7 @@ export class VerifyOtpDto {
   })
   @IsNotEmpty({ message: 'consent is required' })
   @IsString({ message: 'consent must be a string' })
+  @IsIn(['Y', 'y'], { message: 'Customer consent must be Y to proceed' })
   consent: string;
 
   @ApiProperty({
