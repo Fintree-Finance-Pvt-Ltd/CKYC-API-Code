@@ -180,15 +180,31 @@ export class BefiscService implements CkycSearchProvider, CkycDownloadProvider {
     mapper: (data: unknown) => T,
   ): T {
     if (error instanceof AxiosError && error.response?.data) {
+      const { status: httpStatus, data } = error.response;
       this.logger.warn(
-        `Befisc ${operation} returned error response: ${JSON.stringify(error.response.data)}`,
+        `Befisc ${operation} returned HTTP ${httpStatus}: ${JSON.stringify(data)}`,
       );
-      return mapper(error.response.data);
+
+      // Gateway errors (e.g. 504 "Endpoint request timed out") carry no
+      // Befisc `status` field, so they cannot go through the mapper.
+      if (typeof (data as { status?: unknown }).status !== 'number') {
+        const detail =
+          (data as { message?: string }).message || `HTTP ${httpStatus}`;
+        return {
+          success: false,
+          status: httpStatus,
+          message: `Provider request failed: ${detail}`,
+        } as T;
+      }
+      return mapper(data);
     }
 
     const message =
       error instanceof Error ? error.message : 'Unknown provider error';
-    this.logger.error(`Befisc ${operation} failed: ${message}`, error);
+    this.logger.error(
+      `Befisc ${operation} failed: ${message}`,
+      error instanceof Error ? error.stack : undefined,
+    );
 
     return {
       success: false,
