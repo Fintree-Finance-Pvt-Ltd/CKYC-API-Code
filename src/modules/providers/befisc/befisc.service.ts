@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { AxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import {
   CkycSearchProvider,
   CkycSearchProviderInput,
@@ -179,7 +179,7 @@ export class BefiscService implements CkycSearchProvider, CkycDownloadProvider {
     operation: string,
     mapper: (data: unknown) => T,
   ): T {
-    if (error instanceof AxiosError && error.response?.data) {
+    if (isAxiosError(error) && error.response?.data) {
       const { status: httpStatus, data } = error.response;
       this.logger.warn(
         `Befisc ${operation} returned HTTP ${httpStatus}: ${JSON.stringify(data)}`,
