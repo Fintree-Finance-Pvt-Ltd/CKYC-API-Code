@@ -45,6 +45,8 @@ export interface BefiscSendOtpResultPayload {
   req_date?: string;
   request_id?: string;
   message?: string;
+  // Legacy Befisc format carried the OTP text in `error` (status 'otp_pending')
+  error?: string;
   [key: string]: unknown;
 }
 

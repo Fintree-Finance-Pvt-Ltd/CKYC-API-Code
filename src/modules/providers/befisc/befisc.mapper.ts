@@ -93,6 +93,7 @@ export class BefiscMapper {
       status: res.status,
       message:
         res.result?.message ||
+        res.result?.error ||
         res.message ||
         (isSuccess ? 'Success' : 'Failed'),
     };
@@ -269,6 +270,7 @@ export class BefiscMapper {
       status: res.status,
       message:
         res.result?.message ||
+        res.result?.error ||
         res.message ||
         (isSuccess ? 'Success' : 'Failed'),
     };
